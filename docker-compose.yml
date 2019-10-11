@@ -4,5 +4,10 @@ services:
 
   web:
     build: '.'
+    environment:
+      FLASK_DEBUG: '1'
+      TEST_VAR: ${TEST_VAR}
+    volumes:
+      - './src:/srv/src'
     ports:
       - '8080:8080'
