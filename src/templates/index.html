@@ -7,20 +7,12 @@
  <body>
    <h1>Tax Planner</h1>
    <form method="POST" action="/submit">
-     First Name: <input type="text" name="first_name" required><br>
-     Last Name: <input type="text" name="last_name" required><br>
-     Address Line 1: <input type="text" name="address_1" required><br>
-     Address Line 2: <input type="text" name="address_2"><br>
-     City: <input type="text" name="city" required><br>
-     State: <input type="text" name="state" required><br>
-     Zip: <input type="text" name="zip" required><br>
-     Primary Phone Number: <input type="tel" name="primary_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required><br>
-     Secondary Phone Number: <input type="text" name="secondary_phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"><br>
-     Email: <input type="email" name="email" required><br>
+     {% for tab in categories %}
+      {% for field in tab %}
+        {{ field }}: <input type="text" name="{{ field }}" required><br>
+      {% endfor %}
+     {% endfor %}
      <input type="submit" value="Submit">
    </form>
-   {% if name %}
-   <h1>Full name: {{name}} </h1>
-   {% endif %}
  </body>
 </html>
