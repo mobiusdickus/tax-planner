@@ -75,7 +75,7 @@ class GoogleManager(Client):
         self.master_spreadsheet_id = ''
         self.master_doc_id = ''
 
-    def copy_file(self, customer_name, file_id):
+    def copy_file(self, customer_name, file_type, file_id=None):
         service = self.get_service(
             self.credentials, 'drive', 'v3'
         )
@@ -85,6 +85,15 @@ class GoogleManager(Client):
                 customer_name, datetime.now()
             )
         }
+
+        if not file_id:
+            if file_type == 'spreadsheet':
+                file_id = self.master_spreadsheet_id
+            elif file_type == 'document':
+                file_id = self.master_doc_id
+            else:
+                raise
+
         response = service.files().copy(
             fileId=file_id,
             body=file_params
