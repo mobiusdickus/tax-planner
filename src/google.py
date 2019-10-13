@@ -168,22 +168,17 @@ class GoogleManager(Client):
             self.credentials, 'docs', 'v1'
         )
 
-        requests = [{
-            'replaceAllText': {
-                'containsText': {
-                    'text': '{{customer-name}}',
-                    'matchCase':  'true'
-                },
-                'replaceText': data['customer_name'],
-            }}, {
-            'replaceAllText': {
-                'containsText': {
-                    'text': '{{date}}',
-                    'matchCase':  'true'
-                },
-                'replaceText': data['date'],
-            }
-        }]
+        requests = []
+        for key, value in data.items():
+            requests.append({
+                'replaceAllText': {
+                    'containsText': {
+                        'text': '{{%s}}' % key,
+                        'matchCase':  'true'
+                    },
+                    'replaceText': value,
+                }
+            })
 
         result = service.documents().batchUpdate(
             documentId=document['id'],
