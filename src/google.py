@@ -67,17 +67,10 @@ class GoogleManager(Client):
         return response
 
     def update_spreadsheet(self, spreadsheet):
-
-        service = self.get_service(
-            self.credentials, 'sheets', 'v4'
-        )
-
-        spreadsheet_id = spreadsheet['id']
-
-        update_data = {
-            'valueInputOption': 'USER_ENTERED',
-            'data': [
-                {
+        """
+            update_data = {
+                'valueInputOption': 'USER_ENTERED',
+                'data': [{
                     'range': "'Master Sheet'!B2:B6",
                     'majorDimension': 'ROWS',
                     'values': [
@@ -87,22 +80,19 @@ class GoogleManager(Client):
                         ["New York"],
                         ["Single"]
                     ]
-                },
-                {
-                    'range': "'Master Sheet'!G2",
-                    'majorDimension': 'ROWS',
-                    'values': [
-                        ["Real Estate"]
-                    ]
-                },
-                {
-                    'range': "'Master Sheet'!G6",
-                    'majorDimension': 'ROWS',
-                    'values': [
-                        ["4"]
-                    ]
                 }
-            ]
+            }
+        """
+
+        service = self.get_service(
+            self.credentials, 'sheets', 'v4'
+        )
+
+        spreadsheet_id = spreadsheet['id']
+
+        update_data = {
+            'valueInputOption': 'USER_ENTERED',
+            'data': []
         }
 
         response = service.spreadsheets().values().batchUpdate(
@@ -111,3 +101,18 @@ class GoogleManager(Client):
         ).execute()
 
         return response
+
+    def get_sheet_data(self, spreadsheet_id):
+        service = self.get_service(
+            self.credentials, 'sheets', 'v4'
+        )
+
+        value_range = "'Useforpdf'!A2:O2"
+
+        result = service.spreadsheets().values().get(
+            spreadsheetId=spreadsheet_id,
+            range=value_range
+        ).execute()
+        rows = result.get('values', [])
+
+        return rows
