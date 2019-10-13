@@ -4,6 +4,8 @@ from flask import (
     request
 )
 
+from .google import GoogleManager
+
 from .constants import (
     BASIC_INFO,
     FEDERAL_INCOME,
@@ -27,19 +29,37 @@ def tax_form():
     ]
     return render_template('index.html', categories=categories)
 
+@bp.route('/next')
+def next_tab():
+    return
+
 @bp.route('/submit', methods=['POST'])
 def submit_form():
-    # first_name = request.form.get("first_name")
-    # last_name = request.form.get("last_name")
-    # full_name = "{} {}".format(first_name, last_name)
+    customer_name = request.form.get("first_name")
 
-    # return render_template('index.html', name=full_name)
-    return
+    new_spreadsheet = GoogleManager.copy_file(
+        customer_name, 'spreadsheet'
+    )
 
+    updated_spreadsheet = GoogleManager.update_spreadsheet(
+        new_spreadsheet
+    )
 
-@bp.route('/get', methods=['GET'])
-def get_form_data():
-    return
+    sheet_data = GoogleManager.get_sheet_data(
+        updated_spreadsheet['id']
+    )
+
+    new_document = GoogleManager.copy_file(
+        customer_name, 'document'
+    )
+
+    merged_document = GoogleManager.merge_doc(
+        new_document, sheet_data
+    )
+
+    GoogleManager.export_pdf(merged_document)
+
+    return render_template('index.html')
 
 @bp.route('/download', methods=['GET'])
 def download_pdf():
