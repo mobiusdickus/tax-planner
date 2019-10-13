@@ -48,8 +48,9 @@ class GoogleManager(Client):
         # NOTE: Use ENV vars
         self.credentials = Client._authenticate()
         self.master_spreadsheet_id = ''
+        self.master_doc_id = ''
 
-    def new_spreadsheet(self, customer_name):
+    def copy_file(self, customer_name, file_id):
         service = self.get_service(
             self.credentials, 'drive', 'v3'
         )
@@ -60,30 +61,13 @@ class GoogleManager(Client):
             )
         }
         response = service.files().copy(
-            fileId=self.master_spreadsheet_id,
+            fileId=file_id,
             body=file_params
         ).execute()
 
         return response
 
     def update_spreadsheet(self, spreadsheet):
-        """
-            update_data = {
-                'valueInputOption': 'USER_ENTERED',
-                'data': [{
-                    'range': "'Master Sheet'!B2:B6",
-                    'majorDimension': 'ROWS',
-                    'values': [
-                        ["Jessica Lam"],
-                        ["Colin Chan"],
-                        ["Taste Creme"],
-                        ["New York"],
-                        ["Single"]
-                    ]
-                }
-            }
-        """
-
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
         )
@@ -109,10 +93,40 @@ class GoogleManager(Client):
 
         value_range = "'Useforpdf'!A2:O2"
 
-        result = service.spreadsheets().values().get(
+        response = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,
             range=value_range
         ).execute()
-        rows = result.get('values', [])
+        rows = response.get('values', [])
 
         return rows
+
+    def merge_doc(self, document, data):
+
+        service = self.get_service(
+            self.credentials, 'docs', 'v1'
+        )
+
+        requests = [{
+            'replaceAllText': {
+                'containsText': {
+                    'text': '{{customer-name}}',
+                    'matchCase':  'true'
+                },
+                'replaceText': data['customer_name'],
+            }}, {
+            'replaceAllText': {
+                'containsText': {
+                    'text': '{{date}}',
+                    'matchCase':  'true'
+                },
+                'replaceText': data['date'],
+            }
+        }]
+
+        result = service.documents().batchUpdate(
+            documentId=document['id'],
+            body={'requests': requests}
+        ).execute()
+
+        return result
