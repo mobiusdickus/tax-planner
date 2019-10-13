@@ -5,6 +5,31 @@ from apiclient import discovery
 from google.oauth2 import service_account
 
 
+master_spreadsheet_ranges = {
+    'BASIC_INFO': [
+        "'Master Sheet'!B2:B6",
+        "'Master Sheet'!G2",
+        "'Master Sheet'!G6",
+    ],
+    'FEDERAL_INCOME': [
+        "'Master Sheet'!B9:B16",
+    ],
+    'FEDERAL_INCOME_ADJUSTMENTS': [
+        "'Master Sheet'!B19:B24",
+    ],
+    'BUSINESS_INCOME': [
+        "'Master Sheet'!B27:B29",
+    ],
+    'FEDERAL_DEDUCTIONS': [
+        "'Master Sheet'!G11:G19",
+        "'Master Sheet'!G23"
+    ],
+    'ESTIMATED_TAX_PAYMENTS': [
+        "'Master Sheet'!G26",
+    ]
+}
+
+
 class Client(object):
     def __init__(self):
         # NOTE: Use ENV vars
@@ -76,7 +101,31 @@ class GoogleManager(Client):
 
         update_data = {
             'valueInputOption': 'USER_ENTERED',
-            'data': []
+            'data': [{
+                'range': master_spreadsheet_ranges['BASIC_INFO'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }, {
+                'range': master_spreadsheet_ranges['FEDERAL_INCOME'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }, {
+                'range': master_spreadsheet_ranges['FEDERAL_INCOME_ADJUSTMENTS'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }, {
+                'range': master_spreadsheet_ranges['BUSINESS_INCOME'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }, {
+                'range': master_spreadsheet_ranges['FEDERAL_DEDUCTIONS'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }, {
+                'range': master_spreadsheet_ranges['ESTIMATED_TAX_PAYMENTS'],
+                'majorDimension': 'ROWS',
+                'values': []
+            }]
         }
 
         response = service.spreadsheets().values().batchUpdate(

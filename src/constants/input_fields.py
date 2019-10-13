@@ -35,7 +35,7 @@ BUSINESS_INCOME = [
 ]
 
 FEDERAL_DEDUCTIONS = [
-    "Standard Deduction",
+    # "Standard Deduction",
     "Mortgage Interest",
     "State Income Taxes",
     "Local/City Income Taxes",
