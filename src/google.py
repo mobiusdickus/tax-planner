@@ -51,8 +51,9 @@ class Client(object):
             secret_file,
             scopes=self.scopes
         )
+        delegated_credentials = credentials.with_subject(self.primary_user)
 
-        return credentials
+        return delegated_credentials
 
     def get_service(self, credentials, service_name, service_version):
         try:
@@ -71,9 +72,9 @@ class Client(object):
 class GoogleManager(Client):
     def __init__(self):
         # NOTE: Use ENV vars
-        self.credentials = Client._authenticate()
-        self.master_spreadsheet_id = ''
-        self.master_doc_id = ''
+        self.credentials = Client()._authenticate()
+        self.master_spreadsheet_id = '1T3uj1XRnojZx5YxINoG4rYinJKv7qRS7C_pK0lXuK-o'
+        self.master_doc_id = '18D4fZDGW1T_l0QgMZYrQMZ9WJAME5LYYiphH0NU1-ss'
 
     def copy_file(self, customer_name, file_type, file_id=None):
         service = self.get_service(
@@ -82,7 +83,7 @@ class GoogleManager(Client):
 
         file_params = {
             'name': 'Tax Planner - {} - {}'.format(
-                customer_name, datetime.now()
+                customer_name, datetime.datetime.now()
             )
         }
 
@@ -101,7 +102,7 @@ class GoogleManager(Client):
 
         return response
 
-    def update_spreadsheet(self, spreadsheet):
+    def update_spreadsheet(self, spreadsheet, data):
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
         )
@@ -186,3 +187,9 @@ class GoogleManager(Client):
         ).execute()
 
         return result
+
+    def export_pdf(self, document):
+        return
+
+    def download_pdf(self):
+        return

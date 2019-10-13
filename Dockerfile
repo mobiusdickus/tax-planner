@@ -17,6 +17,7 @@ RUN pipenv install
 # Add the project
 ADD setup.py ./
 ADD src ./src
+ADD client_secret.json ./
 RUN pipenv run python setup.py develop
 
 ENV FLASK_APP src

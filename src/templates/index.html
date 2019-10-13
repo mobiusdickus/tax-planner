@@ -8,11 +8,14 @@
    <h1>Tax Planner</h1>
    <form method="POST" action="/submit">
      {% for tab in categories %}
-      {% for field in tab %}
-        {{ field }}: <input type="text" name="{{ field }}" required><br>
+      {% for input_field in tab %}
+      {{ input_field['field'] }}: <input type="{{ input_field['type'] }}" name="{{ input_field['name'] }}"><br>
       {% endfor %}
      {% endfor %}
      <input type="submit" value="Submit">
    </form>
+   {% if data %}
+    <p>{{ data }}</p>
+   {% endif %}
  </body>
 </html>

@@ -35,31 +35,38 @@ def next_tab():
 
 @bp.route('/submit', methods=['POST'])
 def submit_form():
-    customer_name = request.form.get("first_name")
+    manager = GoogleManager()
+    update_data = request.form
+    customer_name = update_data['client_name']
 
-    new_spreadsheet = GoogleManager.copy_file(
+    new_spreadsheet = manager.copy_file(
         customer_name, 'spreadsheet'
     )
 
-    updated_spreadsheet = GoogleManager.update_spreadsheet(
-        new_spreadsheet
+    print(new_spreadsheet)
+
+    updated_spreadsheet = manager.update_spreadsheet(
+        new_spreadsheet,
+        update_data
     )
 
-    sheet_data = GoogleManager.get_sheet_data(
-        updated_spreadsheet['id']
-    )
+    print(updated_spreadsheet)
 
-    new_document = GoogleManager.copy_file(
-        customer_name, 'document'
-    )
+    # sheet_data = GoogleManager.get_sheet_data(
+        # updated_spreadsheet['id']
+    # )
 
-    merged_document = GoogleManager.merge_doc(
-        new_document, sheet_data
-    )
+    # new_document = GoogleManager.copy_file(
+        # customer_name, 'document'
+    # )
 
-    GoogleManager.export_pdf(merged_document)
+    # merged_document = GoogleManager.merge_doc(
+        # new_document, sheet_data
+    # )
 
-    return render_template('index.html')
+    # GoogleManager.export_pdf(merged_document)
+
+    return render_template('index.html', data=update_data)
 
 @bp.route('/download', methods=['GET'])
 def download_pdf():
