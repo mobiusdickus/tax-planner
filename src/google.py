@@ -149,7 +149,7 @@ class GoogleManager(Client):
             self.credentials, 'sheets', 'v4'
         )
 
-        value_range = "'Useforpdf'!A2:O2"
+        value_range = "'Useforpdf'!A1:O2"
 
         response = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,
@@ -157,7 +157,10 @@ class GoogleManager(Client):
         ).execute()
         rows = response.get('values', [])
 
-        return rows
+        # Create dict for row values
+        data = dict(zip(rows[0], rows[1]))
+
+        return data
 
     def merge_doc(self, document, data):
 
