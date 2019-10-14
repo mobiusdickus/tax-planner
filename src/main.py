@@ -29,7 +29,7 @@ def tax_form():
         FEDERAL_DEDUCTIONS,
         ESTIMATED_TAX_PAYMENTS
     ]
-    return render_template('index_bs.html', categories=categories)
+    return render_template('index.html', categories=categories)
 
 @bp.route('/submit', methods=['POST'])
 def submit_form():
