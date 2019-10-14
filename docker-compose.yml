@@ -12,6 +12,8 @@ services:
       CLIENT_SECRET_FILE: ${CLIENT_SECRET_FILE}
       MASTER_DOC_ID: ${MASTER_DOC_ID}
       MASTER_SPREADSHEET_ID: ${MASTER_SPREADSHEET_ID}
+      MASTER_FOLDER_ID: ${MASTER_FOLDER_ID}
+      CLIENT_FOLDER_ID: ${CLIENT_FOLDER_ID}
     volumes:
       - './src:/srv/src'
     ports:
