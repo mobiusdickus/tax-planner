@@ -76,7 +76,8 @@ class GoogleManager(Client):
         self.credentials = Client()._authenticate()
         self.master_spreadsheet_id = settings.MASTER_SPREADSHEET_ID
         self.master_doc_id = settings.MASTER_DOC_ID
-        self.copies_folder_id = '1GymsVJ2Aeu_1IUiXZ-dwV1ocuzyRMbND'
+        self.master_folder_id = settings.MASTER_FOLDER_ID
+        self.client_folder_id = settings.CLIENT_FOLDER_ID
 
     def copy_file(self, customer_name, file_type, file_id=None):
         service = self.get_service(
@@ -87,7 +88,8 @@ class GoogleManager(Client):
             'name': 'Tax Planner - {} - {}'.format(
                 customer_name, datetime.datetime.now()
             ),
-            'parents': [{'id': self.copies_folder_id}]
+            # NOTE: Supposed to copy file to specified folder
+            # 'parents': [{'id': self.copies_folder_id}]
         }
 
         if not file_id:
@@ -101,6 +103,14 @@ class GoogleManager(Client):
         response = service.files().copy(
             fileId=file_id,
             body=file_params
+        ).execute()
+
+        # Move file into client folder
+        service.files().update(
+            fileId=response['id'],
+            addParents=self.client_folder_id,
+            removeParents=self.master_folder_id,
+            fields='id, parents'
         ).execute()
 
         return response
