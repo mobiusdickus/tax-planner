@@ -5,7 +5,6 @@ from flask import (
 )
 
 from .google import GoogleManager
-
 from .constants import (
     BASIC_INFO,
     FEDERAL_INCOME,
@@ -15,7 +14,9 @@ from .constants import (
     ESTIMATED_TAX_PAYMENTS
 )
 
+
 bp = Blueprint('main', __name__)
+
 
 @bp.route('/')
 def tax_form():
@@ -28,6 +29,7 @@ def tax_form():
         ESTIMATED_TAX_PAYMENTS
     ]
     return render_template('index.html', categories=categories)
+
 
 @bp.route('/next')
 def next_tab():
@@ -52,19 +54,25 @@ def submit_form():
 
     print(updated_spreadsheet)
 
-    # sheet_data = GoogleManager.get_sheet_data(
-        # updated_spreadsheet['id']
-    # )
+    sheet_data = manager.get_sheet_data(
+        updated_spreadsheet['spreadsheetId']
+    )
 
-    # new_document = GoogleManager.copy_file(
-        # customer_name, 'document'
-    # )
+    print(sheet_data)
 
-    # merged_document = GoogleManager.merge_doc(
-        # new_document, sheet_data
-    # )
+    new_document = manager.copy_file(
+        customer_name, 'document'
+    )
 
-    # GoogleManager.export_pdf(merged_document)
+    print(new_document)
+
+    merged_document = manager.merge_doc(
+        new_document, sheet_data
+    )
+
+    print(merged_document)
+
+    pdf_request = manager.export_pdf(merged_document['documentId'])
 
     return render_template('index.html', data=update_data)
 

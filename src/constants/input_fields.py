@@ -135,6 +135,10 @@ FEDERAL_DEDUCTIONS = [{
         'type': 'number',
         'name': 'noncash_donations'
     }, {
+        'field': "Other Donations",
+        'type': 'number',
+        'name': 'other_donations'
+    }, {
         'field': "Medical and Dental",
         'type': 'number',
         'name': 'medical_and_dental'
