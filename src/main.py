@@ -1,7 +1,8 @@
 from flask import (
     Blueprint,
     render_template,
-    request
+    request,
+    send_file
 )
 
 from .google import GoogleManager
@@ -29,11 +30,6 @@ def tax_form():
         ESTIMATED_TAX_PAYMENTS
     ]
     return render_template('index_bs.html', categories=categories)
-
-
-@bp.route('/next')
-def next_tab():
-    return
 
 @bp.route('/submit', methods=['POST'])
 def submit_form():
@@ -72,10 +68,10 @@ def submit_form():
 
     print(merged_document)
 
-    pdf_request = manager.export_pdf(merged_document['documentId'])
+    file = manager.export_and_download_pdf(merged_document['documentId'])
 
-    return render_template('index.html', data=update_data)
-
-@bp.route('/download', methods=['GET'])
-def download_pdf():
-    return
+    return send_file(
+        file,
+        attachment_filename=new_document['name'],
+        mimetype='application/pdf'
+    )

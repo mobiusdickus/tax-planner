@@ -35,7 +35,6 @@ master_spreadsheet_ranges = {
 
 class Client(object):
     def __init__(self):
-        # NOTE: Use ENV vars
         self.client_secret_filename = settings.CLIENT_SECRET_FILENAME
         self.primary_user = settings.PRIMARY_USER
         self.scopes = [
@@ -47,7 +46,7 @@ class Client(object):
     def _authenticate(self):
         secret_file = os.path.join(
             os.getcwd(),
-            self.client_secret_file
+            self.client_secret_filename
         )
 
         credentials = service_account.Credentials.from_service_account_file(
@@ -74,10 +73,10 @@ class Client(object):
 
 class GoogleManager(Client):
     def __init__(self):
-        # NOTE: Use ENV vars
         self.credentials = Client()._authenticate()
         self.master_spreadsheet_id = settings.MASTER_SPREADSHEET_ID
         self.master_doc_id = settings.MASTER_DOC_ID
+        self.copies_folder_id = '1GymsVJ2Aeu_1IUiXZ-dwV1ocuzyRMbND'
 
     def copy_file(self, customer_name, file_type, file_id=None):
         service = self.get_service(
@@ -87,7 +86,8 @@ class GoogleManager(Client):
         file_params = {
             'name': 'Tax Planner - {} - {}'.format(
                 customer_name, datetime.datetime.now()
-            )
+            ),
+            'parents': [{'id': self.copies_folder_id}]
         }
 
         if not file_id:
@@ -251,7 +251,7 @@ class GoogleManager(Client):
 
         return result
 
-    def export_pdf(self, document_id):
+    def export_and_download_pdf(self, document_id):
         service = self.get_service(
             self.credentials, 'drive', 'v3'
         )
@@ -259,12 +259,13 @@ class GoogleManager(Client):
             fileId=document_id,
             mimeType='application/pdf'
         )
-        return request
 
-    def download_pdf(self, request):
         fh = io.BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
         done = False
         while done is False:
             status, done = downloader.next_chunk()
-            print("Download %d%%." % int(status.progress() * 100))
+
+        fh.seek(0)
+
+        return fh
