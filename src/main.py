@@ -28,7 +28,7 @@ def tax_form():
         FEDERAL_DEDUCTIONS,
         ESTIMATED_TAX_PAYMENTS
     ]
-    return render_template('index.html', categories=categories)
+    return render_template('index_bs.html', categories=categories)
 
 
 @bp.route('/next')
