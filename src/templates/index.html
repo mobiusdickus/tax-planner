@@ -23,7 +23,7 @@
         <step-navigation :steps="steps" :currentstep="currentstep"></step-navigation>
 
         {% for i in range(6) %}
-        <div v-show="currentstep == {{ i + 1}}">
+        <div v-show="currentstep == {{ i + 1 }}">
           {% for field in categories[i] %}
           <div class="form-group row text-center mb-0">
             <label class="col-sm-4 col-form-label text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
@@ -42,7 +42,7 @@
                   <span class="input-group-text" id="basic-addon1">$</span>
                 </div>
                 {% endif %}
-                <input class="form-control step-{{ i + 1 }}" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
+                <input class="form-control step-{{ i + 1 }}" {% if field.get('currency') %}step="0.01"{% endif %} type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
               {% endif %}
               </div>
             </div>
