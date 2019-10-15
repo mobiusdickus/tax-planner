@@ -47,38 +47,26 @@ def submit_form():
         customer_name, 'spreadsheet'
     )
 
-    print(new_spreadsheet)
-
     prepared_data = manager.prepare_update_data(form_data)
-
-    print(prepared_data)
 
     updated_spreadsheet = manager.update_spreadsheet(
         new_spreadsheet,
         prepared_data
     )
 
-    print(updated_spreadsheet)
-
     sheet_data = manager.get_sheet_data(
         updated_spreadsheet['spreadsheetId']
     )
-
-    print(sheet_data)
 
     new_document = manager.copy_file(
         customer_name, 'document'
     )
 
-    print(new_document)
-
     merged_document = manager.merge_doc(
         new_document, sheet_data
     )
 
-    print(merged_document)
-
-    file = manager.export_and_download_pdf(merged_document['documentId'])
+    file = manager.export_pdf(merged_document['documentId'])
 
     return send_file(
         file,

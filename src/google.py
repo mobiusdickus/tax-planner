@@ -1,6 +1,10 @@
 import io
 import os
-import datetime
+
+from datetime import datetime
+from apiclient import discovery
+from apiclient.http import MediaIoBaseDownload
+from google.oauth2 import service_account
 
 from src import settings
 from src.constants import (
@@ -13,10 +17,6 @@ from src.constants import (
 
     MASTER_SPREADSHEET_RANGES
 )
-
-from apiclient import discovery
-from apiclient.http import MediaIoBaseDownload
-from google.oauth2 import service_account
 
 
 
@@ -71,9 +71,10 @@ class GoogleManager(Client):
             self.credentials, 'drive', 'v3'
         )
 
+    def copy_file(self, customer_name, file_type, file_id=None):
         file_params = {
             'name': 'Tax Planner - {} - {}'.format(
-                customer_name, datetime.datetime.now()
+                customer_name, datetime.now().replace(microsecond=0)
             ),
             # NOTE: Supposed to copy file to specified folder
             # 'parents': [{'id': self.copies_folder_id}]
@@ -202,11 +203,8 @@ class GoogleManager(Client):
 
         return result
 
-    def export_and_download_pdf(self, document_id):
-        service = self.get_service(
-            self.credentials, 'drive', 'v3'
-        )
-        request = service.files().export_media(
+    def export_pdf(self, document_id):
+        request = self.drive_service.files().export_media(
             fileId=document_id,
             mimeType='application/pdf'
         )
