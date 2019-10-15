@@ -64,7 +64,7 @@ Vue.component("step", {
 
         lastStep() {
             this.$emit("step-change", this.currentstep - 1);
-        }
+        },
 
         submitForm() {
             if (this.stepValid()) {
