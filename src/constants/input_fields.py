@@ -51,6 +51,10 @@ MASTER_SPREADSHEET_RANGES = {
     'ESTIMATED_TAX_PAYMENTS': [{
         'pos': 0,
         'range': "'Master Sheet'!G26",
+    }],
+    'COMPLETION_INFO': [{
+        'pos': 0,
+        'range': "'Useforpdf'!M2:M4"
     }]
 }
 

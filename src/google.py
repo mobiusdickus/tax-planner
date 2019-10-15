@@ -15,7 +15,7 @@ from src.constants import (
     FEDERAL_DEDUCTIONS,
     ESTIMATED_TAX_PAYMENTS,
 
-    MASTER_SPREADSHEET_RANGES
+    MASTER_SPREADSHEET_RANGES,
 )
 
 
@@ -118,6 +118,16 @@ class GoogleManager(Client):
                 category = FEDERAL_DEDUCTIONS
             elif 'ESTIMATED_TAX_PAYMENTS':
                 category = ESTIMATED_TAX_PAYMENTS
+            elif 'COMPLETION_INFO':
+                prepared_data.append({
+                    'range': "'Useforpdf'!M2:M4",
+                    'values': [
+                        update_data['doc_link'],
+                        update_data['pdf_link'],
+                        update_data['email_status'],
+                    ]
+                })
+                continue
             else:
                 raise
 
@@ -147,6 +157,13 @@ class GoogleManager(Client):
                 'values': d['values']
             })
 
+        # Clear previous spreadsheets completion info
+        request_data.append({
+            'range': "'Useforpdf'!M2:M4",
+            'majorDimension': 'ROWS',
+            'values': [['', '', '']]
+        })
+
         body = {
             'valueInputOption': 'USER_ENTERED',
             'data': request_data
@@ -164,7 +181,7 @@ class GoogleManager(Client):
             self.credentials, 'sheets', 'v4'
         )
 
-        value_range = "'Useforpdf'!A1:O2"
+        value_range = "'Useforpdf'!A1:L2"
 
         response = service.spreadsheets().values().get(
             spreadsheetId=spreadsheet_id,

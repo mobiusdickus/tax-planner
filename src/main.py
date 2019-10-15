@@ -50,8 +50,7 @@ def submit_form():
     prepared_data = manager.prepare_update_data(form_data)
 
     updated_spreadsheet = manager.update_spreadsheet(
-        new_spreadsheet,
-        prepared_data
+        new_spreadsheet, prepared_data
     )
 
     sheet_data = manager.get_sheet_data(
@@ -64,6 +63,12 @@ def submit_form():
 
     merged_document = manager.merge_doc(
         new_document, sheet_data
+    )
+
+    completion_info = None
+
+    manager.update_spreadsheet(
+        updated_spreadsheet, completion_info
     )
 
     file = manager.export_pdf(merged_document['documentId'])
