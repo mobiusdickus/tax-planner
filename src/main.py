@@ -79,6 +79,6 @@ def submit_form():
     return send_file(
         file,
         attachment_filename=new_document['name'],
-        as_attachment=True,
+        as_attachment=False,
         mimetype='application/pdf'
     )
