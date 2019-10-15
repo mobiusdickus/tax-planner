@@ -56,17 +56,6 @@ Vue.component("step", {
             return true;
         },
 
-        submitForm() {
-            this.showLoader();
-            document.forms[0].submit();
-        },
-
-        showLoader() {
-            let loader = this.$loading.show({
-                loader: 'bars',
-            });
-        },
-
         nextStep() {
             if (this.stepValid()) {
                 this.$emit("step-change", this.currentstep + 1);
@@ -75,7 +64,14 @@ Vue.component("step", {
 
         lastStep() {
             this.$emit("step-change", this.currentstep - 1);
-        }
+        },
+
+        submitForm() {
+            if (this.stepValid()) {
+                this.$loading.show({ loader: 'bars' })
+                document.forms[0].submit();
+            }
+        },
     }
 });
 
