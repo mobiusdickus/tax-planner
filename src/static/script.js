@@ -48,12 +48,20 @@ Vue.component("step", {
     methods: {
         stepValid() {
             const fields = document.getElementsByClassName('step-' + this.currentstep);
+
+            let stepValid = true;
             for (let f of fields) {
-                if (! f.checkValidity()) {
-                    return false;
+                if (f.reportValidity()) {
+                    f.classList.add('is-valid');
+                    f.classList.remove('is-invalid');
+                } else {
+                    stepValid = false;
+                    f.classList.add('is-invalid');
+                    f.classList.remove('is-valid');
                 }
             }
-            return true;
+
+            return stepValid;
         },
 
         nextStep() {
@@ -121,3 +129,25 @@ new Vue({
         }
     }
 });
+
+
+const updateValidityIndicator = (event) => {
+    const e = event.target;
+
+    if (e.checkValidity()) {
+        e.classList.add('is-valid');
+        e.classList.remove('is-invalid');
+    } else {
+        e.classList.remove('is-valid');
+        e.classList.add('is-invalid');
+    }
+}
+
+for (let element of document.getElementsByTagName('input')) {
+    element.addEventListener('blur', updateValidityIndicator);
+    element.addEventListener('keyup', updateValidityIndicator);
+}
+
+for (let element of document.getElementsByTagName('select')) {
+    element.addEventListener('blur', updateValidityIndicator);
+}
