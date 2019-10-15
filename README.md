@@ -51,6 +51,10 @@ Here we will also need to grab the sheets Id and the docs Id and set them as env
 - `MASTER_SPREADSHEET_ID`
 - `MASTER_DOC_ID`
 
+## Prerequisites
+
+- Install Docker & Docker Compose
+
 ## Local Development
 
 Run with `make develop`.
