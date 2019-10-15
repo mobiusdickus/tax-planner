@@ -71,7 +71,6 @@ class GoogleManager(Client):
             self.credentials, 'drive', 'v3'
         )
 
-    def copy_file(self, customer_name, file_type, file_id=None):
         file_params = {
             'name': 'Tax Planner - {} - {}'.format(
                 customer_name, datetime.now().replace(microsecond=0)
@@ -190,7 +189,7 @@ class GoogleManager(Client):
                 'replaceAllText': {
                     'containsText': {
                         'text': '{{%s}}' % key,
-                        'matchCase':  'true'
+                        'matchCase': 'true'
                     },
                     'replaceText': value,
                 }
