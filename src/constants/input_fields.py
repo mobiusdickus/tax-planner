@@ -15,15 +15,15 @@ BASIC_INFO = [{
         'name': 'business_name'
      }, {
         'field': "State",
-        'type': 'text',
+        'type': 'select',
         'name': 'state'
      }, {
          'field': "Filing Status",
-         'type': 'text',
+         'type': 'select',
          'name': 'filing_status'
      }, {
          'field': "Industry",
-         'type': 'text',
+         'type': 'select',
          'name': 'industry'
      }, {
          'field': "Number of Qualified Children",

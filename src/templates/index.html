@@ -20,7 +20,29 @@
             {% for field in categories[0] %}
                 <div class="form-group">
                     <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-                    <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control" aria-describedby="" placeholder="" required>
+                    {% if field['type'] == 'select' %}
+                        {% if field['name'] == 'state' %}
+                        <select>
+                            {% for state in states %}
+                            <option value="state">{{ state }}</option>
+                            {% endfor %}
+                        </select>
+                        {% elif field['name'] == 'filing_status' %}
+                        <select>
+                            {% for status in filing_statuses %}
+                            <option value="status">{{ status }}</option>
+                            {% endfor %}
+                        </select>
+                        {% elif field['name'] == 'industry' %}
+                        <select>
+                          {% for industry in industries %}
+                            <option value="industry">{{ industry }}</option>
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                    {% else %}
+                        <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control" aria-describedby="" placeholder="" required>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

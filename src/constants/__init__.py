@@ -5,6 +5,10 @@ from .input_fields import (
     BUSINESS_INCOME,
     FEDERAL_DEDUCTIONS,
     ESTIMATED_TAX_PAYMENTS,
+
+    STATES,
+    FILING_STATUSES,
+    INDUSTRIES
 )
 
 __all__ = [
@@ -14,4 +18,7 @@ __all__ = [
     b'BUSINESS_INCOME',
     b'FEDERAL_DEDUCTIONS',
     b'ESTIMATED_TAX_PAYMENTS',
+    b'STATES',
+    b'FILING_STATUSES',
+    b'INDUSTRIES'
 ]
