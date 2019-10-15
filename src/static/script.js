@@ -38,15 +38,25 @@ Vue.component("step", {
         },
 
         stepWrapperClass() {
-            return {
-                active: this.active
-            };
+            return { active: this.active };
         }
     },
 
     methods: {
+        stepValid() {
+            const fields = document.getElementsByClassName('step-' + this.currentstep);
+            for (let f of fields) {
+                if (! f.checkValidity()) {
+                    return false;
+                }
+            }
+            return true;
+        },
+
         nextStep() {
-            this.$emit("step-change", this.currentstep + 1);
+            if (this.stepValid()) {
+                this.$emit("step-change", this.currentstep + 1);
+            }
         },
 
         lastStep() {
