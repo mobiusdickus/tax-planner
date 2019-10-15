@@ -8,30 +8,6 @@ from apiclient.http import MediaIoBaseDownload
 from google.oauth2 import service_account
 
 
-master_spreadsheet_ranges = {
-    'BASIC_INFO': [
-        "'Master Sheet'!B2:B6",
-        "'Master Sheet'!G2",
-        "'Master Sheet'!G6",
-    ],
-    'FEDERAL_INCOME': [
-        "'Master Sheet'!B9:B16",
-    ],
-    'FEDERAL_INCOME_ADJUSTMENTS': [
-        "'Master Sheet'!B19:B24",
-    ],
-    'BUSINESS_INCOME': [
-        "'Master Sheet'!B27:B29",
-    ],
-    'FEDERAL_DEDUCTIONS': [
-        "'Master Sheet'!G11:G19",
-        "'Master Sheet'!G23"
-    ],
-    'ESTIMATED_TAX_PAYMENTS': [
-        "'Master Sheet'!G26",
-    ]
-}
-
 
 class Client(object):
     def __init__(self):
@@ -115,16 +91,20 @@ class GoogleManager(Client):
 
         return response
 
+    def prepare_update_data(self, update_data):
+        return
+
     def update_spreadsheet(self, spreadsheet, update_data):
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
         )
 
         spreadsheet_id = spreadsheet['id']
+        ranges = settings.MASTER_SPREADSHEET_RANGES
 
         request_data = [
             {       # Basic Info
-                'range': master_spreadsheet_ranges['BASIC_INFO'][0],
+                'range': ranges['BASIC_INFO'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['tax_advisor']],
@@ -134,19 +114,19 @@ class GoogleManager(Client):
                     [update_data['filing_status']]
                 ]
             }, {
-                'range': master_spreadsheet_ranges['BASIC_INFO'][1],
+                'range': ranges['BASIC_INFO'][1],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['industry']]
                 ]
             }, {
-                'range': master_spreadsheet_ranges['BASIC_INFO'][2],
+                'range': ranges['BASIC_INFO'][2],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['num_of_children']]
                 ]
             }, {    # Federal Income
-                'range': master_spreadsheet_ranges['FEDERAL_INCOME'][0],
+                'range': ranges['FEDERAL_INCOME'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['w2_income']],
@@ -159,7 +139,7 @@ class GoogleManager(Client):
                     [update_data['other_income']]
                 ]
             }, {    # Federal Income Adjustments
-                'range': master_spreadsheet_ranges['FEDERAL_INCOME_ADJUSTMENTS'][0],
+                'range': ranges['FEDERAL_INCOME_ADJUSTMENTS'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['health_insurance_premium']],
@@ -170,7 +150,7 @@ class GoogleManager(Client):
                     [update_data['other_deductions']]
                 ]
             }, {    # Business Income
-                'range': master_spreadsheet_ranges['BUSINESS_INCOME'][0],
+                'range': ranges['BUSINESS_INCOME'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['s_corp_business_income']],
@@ -178,7 +158,7 @@ class GoogleManager(Client):
                     [update_data['s_corp_wages']]
                 ]
             }, {    # Federal Deductions
-                'range': master_spreadsheet_ranges['FEDERAL_DEDUCTIONS'][0],
+                'range': ranges['FEDERAL_DEDUCTIONS'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['mortgage_interest']],
@@ -192,13 +172,13 @@ class GoogleManager(Client):
                     [update_data['medical_and_dental']]
                 ]
             }, {
-                'range': master_spreadsheet_ranges['FEDERAL_DEDUCTIONS'][1],
+                'range': ranges['FEDERAL_DEDUCTIONS'][1],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['federal_tax_withheld']]
                 ]
             }, {    # ESTIMATED_TAX_PAYMENTS
-                'range': master_spreadsheet_ranges['ESTIMATED_TAX_PAYMENTS'][0],
+                'range': ranges['ESTIMATED_TAX_PAYMENTS'][0],
                 'majorDimension': 'ROWS',
                 'values': [
                     [update_data['federal_estimated_tax_payments']]
