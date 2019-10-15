@@ -8,7 +8,9 @@ from .input_fields import (
 
     STATES,
     FILING_STATUSES,
-    INDUSTRIES
+    INDUSTRIES,
+
+    MASTER_SPREADSHEET_RANGES
 )
 
 __all__ = [
@@ -20,5 +22,6 @@ __all__ = [
     b'ESTIMATED_TAX_PAYMENTS',
     b'STATES',
     b'FILING_STATUSES',
-    b'INDUSTRIES'
+    b'INDUSTRIES',
+    b'MASTER_SPREADSHEET_RANGES'
 ]

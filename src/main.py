@@ -40,8 +40,8 @@ def tax_form():
 @bp.route('/submit', methods=['POST'])
 def submit_form():
     manager = GoogleManager()
-    update_data = request.form
-    customer_name = update_data['client_name']
+    form_data = request.form
+    customer_name = form_data['client_name']
 
     new_spreadsheet = manager.copy_file(
         customer_name, 'spreadsheet'
@@ -49,9 +49,13 @@ def submit_form():
 
     print(new_spreadsheet)
 
+    prepared_data = manager.prepare_update_data(form_data)
+
+    print(prepared_data)
+
     updated_spreadsheet = manager.update_spreadsheet(
         new_spreadsheet,
-        update_data
+        prepared_data
     )
 
     print(updated_spreadsheet)
