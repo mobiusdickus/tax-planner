@@ -22,123 +22,34 @@
       <div id="app">
         <step-navigation :steps="steps" :currentstep="currentstep"></step-navigation>
 
-        <div v-show="currentstep == 1">
-          {% for field in categories[0] %}
-          <div class="form-group row text-center">
+        {% for i in range(6) %}
+        <div v-show="currentstep == {{ i + 1}}">
+          {% for field in categories[i] %}
+          <div class="form-group row text-center mb-0">
             <label class="col-sm-4 col-form-label text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
             <div class="col-sm-4">
+              <div class="input-group mb-3">
               {% if field['type'] == 'select' %}
-              <select class="form-control step-1" required>
+              <select class="form-control step-{{ i + 1 }}" required>
                 <option disabled selected value></option>
                 {% for choice in field.get('choices', []) %}
                 <option value="{{ choice }}">{{ choice }}</option>
                 {% endfor %}
               </select>
               {% else %}
-              <div class="input-group mb-3">
                 {% if field.get('currency') %}
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">@</span>
+                  <span class="input-group-text" id="basic-addon1">$</span>
                 </div>
                 {% endif %}
-                <input class="form-control step-1" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
-              </div>
+                <input class="form-control step-{{ i + 1 }}" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
               {% endif %}
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div v-show="currentstep == 2">
-          {% for field in categories[1] %}
-          <div class="form-group row">
-            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <div class="col-sm-4">
-              <div class="input-group mb-3">
-                {% if field.get('currency') %}
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">$</span>
-                </div>
-                {% endif %}
-                <input class="form-control step-2" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
               </div>
             </div>
           </div>
           {% endfor %}
         </div>
-
-        <div v-show="currentstep == 3">
-          {% for field in categories[2] %}
-          <div class="form-group row">
-            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <div class="col-sm-4">
-              <div class="input-group mb-3">
-                {% if field.get('currency') %}
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">$</span>
-                </div>
-                {% endif %}
-                <input class="form-control step-3" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div v-show="currentstep == 4">
-          {% for field in categories[3] %}
-          <div class="form-group row">
-            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <div class="col-sm-4">
-              <div class="input-group mb-3">
-                {% if field.get('currency') %}
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">$</span>
-                </div>
-                {% endif %}
-                <input class="form-control step-4" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div v-show="currentstep == 5">
-          {% for field in categories[4] %}
-          <div class="form-group row">
-            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <div class="col-sm-4">
-              <div class="input-group mb-3">
-                {% if field.get('currency') %}
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">$</span>
-                </div>
-                {% endif %}
-                <input class="form-control step-5" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div v-show="currentstep == 6">
-          {% for field in categories[5] %}
-          <div class="form-group row">
-            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <div class="col-sm-4">
-              <div class="input-group mb-3">
-                {% if field.get('currency') %}
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="basic-addon1">$</span>
-                </div>
-                {% endif %}
-                <input class="form-control step-6" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
-              </div>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-
+        {% endfor %}
 
         <step v-for="step in steps" :currentstep="currentstep" :key="step.id" :step="step" :stepcount="steps.length" @step-change="stepChanged">
         </step>
