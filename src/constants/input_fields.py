@@ -1,6 +1,23 @@
 import us
 
 
+STATES = [s.name for s in us.STATES]
+
+FILING_STATUSES = [
+    'Single',
+    'Married Filing Jointly'
+]
+
+INDUSTRIES = [
+    'Real Estate',
+    'Food and Beverage',
+    'Truckers',
+    'Uber/Lyft/Rideshare Drivers',
+    'Cannabis',
+    'Entertainment',
+    'Ecommerce'
+]
+
 BASIC_INFO = [{
     'field': "Tax Advisor",
     'type': 'text',
@@ -16,15 +33,18 @@ BASIC_INFO = [{
 }, {
     'field': "State",
     'type': 'select',
-    'name': 'state'
+    'name': 'state',
+    'choices': STATES
 }, {
     'field': "Filing Status",
     'type': 'select',
-    'name': 'filing_status'
+    'name': 'filing_status',
+    'choices': FILING_STATUSES
 }, {
     'field': "Industry",
     'type': 'select',
-    'name': 'industry'
+    'name': 'industry',
+    'choices': INDUSTRIES
 }, {
     'field': "Number of Qualified Children",
     'type': 'number',
@@ -186,19 +206,3 @@ ESTIMATED_TAX_PAYMENTS = [{
 }
 ]
 
-STATES = [s.name for s in us.STATES]
-
-FILING_STATUSES = [
-    'Single',
-    'Married Filing Jointly'
-]
-
-INDUSTRIES = [
-    'Real Estate',
-    'Food and Beverage',
-    'Truckers',
-    'Uber/Lyft/Rideshare Drivers',
-    'Cannabis',
-    'Entertainment',
-    'Ecommerce'
-]

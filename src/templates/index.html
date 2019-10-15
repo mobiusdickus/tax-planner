@@ -28,25 +28,12 @@
             <label class="col-sm-4 col-form-label text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
             <div class="col-sm-4">
               {% if field['type'] == 'select' %}
-              {% if field['name'] == 'state' %}
-              <select class="form-control">
-                {% for state in states %}
-                <option value="state">{{ state }}</option>
+              <select class="form-control step-1" required>
+                <option disabled selected value></option>
+                {% for choice in field.get('choices', []) %}
+                <option value="{{ choice }}">{{ choice }}</option>
                 {% endfor %}
               </select>
-              {% elif field['name'] == 'filing_status' %}
-              <select class="form-control">
-                {% for status in filing_statuses %}
-                <option value="status">{{ status }}</option>
-                {% endfor %}
-              </select>
-              {% elif field['name'] == 'industry' %}
-              <select class="form-control">
-                {% for industry in industries %}
-                <option value="industry">{{ industry }}</option>
-                {% endfor %}
-              </select>
-              {% endif %}
               {% else %}
               <div class="input-group mb-3">
                 {% if field.get('currency') %}
