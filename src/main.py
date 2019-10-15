@@ -12,7 +12,11 @@ from .constants import (
     FEDERAL_INCOME_ADJUSTMENTS,
     BUSINESS_INCOME,
     FEDERAL_DEDUCTIONS,
-    ESTIMATED_TAX_PAYMENTS
+    ESTIMATED_TAX_PAYMENTS,
+
+    STATES,
+    FILING_STATUSES,
+    INDUSTRIES
 )
 
 
@@ -29,7 +33,9 @@ def tax_form():
         FEDERAL_DEDUCTIONS,
         ESTIMATED_TAX_PAYMENTS
     ]
-    return render_template('index.html', categories=categories)
+    return render_template('index.html', categories=categories,
+                           states=STATES, industries=INDUSTRIES,
+                           filing_statuses=FILING_STATUSES)
 
 @bp.route('/submit', methods=['POST'])
 def submit_form():

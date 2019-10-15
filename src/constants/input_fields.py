@@ -1,3 +1,6 @@
+import us
+
+
 BASIC_INFO = [{
         'field': "Tax Advisor",
         'type': 'text',
@@ -156,8 +159,19 @@ ESTIMATED_TAX_PAYMENTS = [{
     }
 ]
 
-STATES = []
+STATES = [s.name for s in us.STATES]
 
-FILING_STATUSES = []
+FILING_STATUSES = [
+    'Single',
+    'Married Filing Jointly'
+]
 
-INDUSTRIES = []
+INDUSTRIES = [
+    'Real Estate',
+    'Food and Beverage',
+    'Truckers',
+    'Uber/Lyft/Rideshare Drivers',
+    'Cannabis',
+    'Entertainment',
+    'Ecommerce'
+]
