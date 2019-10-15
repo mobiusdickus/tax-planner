@@ -13,35 +13,34 @@
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<div class="card m-5 pt-4 pb-4">
-  <div class="m-3 text-center">
-    <h1 class="display-4">1-800Accountant Tax Planner</h1>
+<div class="card m-5">
+  <div class="card-header p-3 text-center">
+    <h1 class="display-5 m-0">1-800Accountant Tax Planner</h1>
   </div>
   <form class="form-horizontal" method="POST" action="/submit">
     <div class="container">
       <div id="app">
         <step-navigation :steps="steps" :currentstep="currentstep"></step-navigation>
         <div v-show="currentstep == 1">
-            <h3>Basic Info</h3>
             {% for field in categories[0] %}
-                <div class="form-group row">
-                    <label class="col-sm-2 col-form-label" for="{{ field['name'] }}">{{ field['field'] }}:</label>
-                    <div class="col-sm-2">
+                <div class="form-group row text-center">
+                    <label class="col-sm-4 col-form-label text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+                    <div class="col-sm-4">
                         {% if field['type'] == 'select' %}
                             {% if field['name'] == 'state' %}
-                            <select>
+                            <select class="form-control">
                                 {% for state in states %}
                                 <option value="state">{{ state }}</option>
                                 {% endfor %}
                             </select>
                             {% elif field['name'] == 'filing_status' %}
-                            <select>
+                            <select class="form-control">
                                 {% for status in filing_statuses %}
                                 <option value="status">{{ status }}</option>
                                 {% endfor %}
                             </select>
                             {% elif field['name'] == 'industry' %}
-                            <select>
+                            <select class="form-control">
                               {% for industry in industries %}
                                 <option value="industry">{{ industry }}</option>
                                 {% endfor %}
@@ -54,48 +53,58 @@
                 </div>
             {% endfor %}
         </div>
+
         <div v-show="currentstep == 2">
-          <h3>Federal Income</h3>
           {% for field in categories[1] %}
-          <div class="form-group">
-            <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-2" aria-describedby="" placeholder="" required>
+          <div class="form-group row">
+            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+            <div class="col-sm-4">
+              <input class="form-control step-2" type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
+            </div>
           </div>
           {% endfor %}
         </div>
+
         <div v-show="currentstep == 3">
-          <h3>Federal Income Adjustments</h3>
           {% for field in categories[2] %}
-          <div class="form-group">
-            <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-3" aria-describedby="" placeholder="" required>
+          <div class="form-group row">
+            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+            <div class="col-sm-4">
+              <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-3" aria-describedby="" placeholder="" required>
+            </div>
           </div>
           {% endfor %}
         </div>
+
         <div v-show="currentstep == 4">
-          <h3>Business Income</h3>
           {% for field in categories[3] %}
-          <div class="form-group">
-            <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-4" aria-describedby="" placeholder="" required>
+          <div class="form-group row">
+            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+            <div class="col-sm-4">
+              <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-4" aria-describedby="" placeholder="" required>
+            </div>
           </div>
           {% endfor %}
         </div>
+
         <div v-show="currentstep == 5">
-          <h3>Federal Deductions</h3>
           {% for field in categories[4] %}
-          <div class="form-group">
-            <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-5" aria-describedby="" placeholder="" required>
+          <div class="form-group row">
+            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+            <div class="col-sm-4">
+              <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-5" aria-describedby="" placeholder="" required>
+            </div>
           </div>
           {% endfor %}
         </div>
+
         <div v-show="currentstep == 6">
-          <h3>Estimated Tax Payments</h3>
           {% for field in categories[5] %}
-          <div class="form-group">
-            <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-6" aria-describedby="" placeholder="" required>
+          <div class="form-group row">
+            <label class="col-form-label col-sm-4 text-right" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+            <div class="col-sm-4">
+              <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-6" aria-describedby="" placeholder="" required>
+            </div>
           </div>
           {% endfor %}
         </div>
@@ -119,7 +128,7 @@
         </script>
 
         <script type="x-template" id="step-template">
-          <div class="step-wrapper" :class="stepWrapperClass">
+          <div class="step-wrapper text-center" :class="stepWrapperClass">
                   <button type="button" class="btn btn-primary" @click="lastStep" :disabled="firststep">
                       Back
                   </button>
@@ -139,6 +148,5 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.4/vue.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/vue-loading-overlay@3"></script>
   <script  src="/static/script.js"></script>
-
 </body>
 </html>
