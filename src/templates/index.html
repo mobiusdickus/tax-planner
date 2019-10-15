@@ -30,7 +30,7 @@
             <div class="col-sm-4">
               <div class="input-group mb-3">
               {% if field['type'] == 'select' %}
-              <select class="form-control step-{{ i + 1 }}" required>
+              <select class="form-control step-{{ i + 1 }}" name="{{ field['name'] }}" required>
                 <option disabled selected value></option>
                 {% for choice in field.get('choices', []) %}
                 <option value="{{ choice }}">{{ choice }}</option>
@@ -42,7 +42,7 @@
                   <span class="input-group-text" id="basic-addon1">$</span>
                 </div>
                 {% endif %}
-                <input class="form-control step-{{ i + 1 }}" {% if field.get('currency') %}step="0.01"{% endif %} type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
+                <input value="1000" class="form-control step-{{ i + 1 }}" {% if field.get('currency') %}step="0.01"{% endif %} type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
               {% endif %}
               </div>
             </div>
