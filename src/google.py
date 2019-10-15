@@ -203,7 +203,8 @@ class GoogleManager(Client):
         return result
 
     def export_pdf(self, document_id):
-        request = self.drive_service.files().export_media(
+        service = self.get_service(self.credentials, 'drive', 'v3')
+        request = service.files().export_media(
             fileId=document_id,
             mimeType='application/pdf'
         )
