@@ -5,12 +5,13 @@
   <title>Tax Planner</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.min.css'>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<form method="POST" action="/submit">
+<form class="form-horizontal" method="POST" action="/submit">
 <div class="container">
     <div id="app">
         <step-navigation :steps="steps" :currentstep="currentstep">
@@ -18,31 +19,33 @@
         <div v-show="currentstep == 1">
             <h3>Basic Info</h3>
             {% for field in categories[0] %}
-                <div class="form-group">
-                    <label for="{{ field['name'] }}">{{ field['field'] }}:</label>
-                    {% if field['type'] == 'select' %}
-                        {% if field['name'] == 'state' %}
-                        <select>
-                            {% for state in states %}
-                            <option value="state">{{ state }}</option>
-                            {% endfor %}
-                        </select>
-                        {% elif field['name'] == 'filing_status' %}
-                        <select>
-                            {% for status in filing_statuses %}
-                            <option value="status">{{ status }}</option>
-                            {% endfor %}
-                        </select>
-                        {% elif field['name'] == 'industry' %}
-                        <select>
-                          {% for industry in industries %}
-                            <option value="industry">{{ industry }}</option>
-                            {% endfor %}
-                        </select>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label" for="{{ field['name'] }}">{{ field['field'] }}:</label>
+                    <div class="col-sm-2">
+                        {% if field['type'] == 'select' %}
+                            {% if field['name'] == 'state' %}
+                            <select>
+                                {% for state in states %}
+                                <option value="state">{{ state }}</option>
+                                {% endfor %}
+                            </select>
+                            {% elif field['name'] == 'filing_status' %}
+                            <select>
+                                {% for status in filing_statuses %}
+                                <option value="status">{{ status }}</option>
+                                {% endfor %}
+                            </select>
+                            {% elif field['name'] == 'industry' %}
+                            <select>
+                              {% for industry in industries %}
+                                <option value="industry">{{ industry }}</option>
+                                {% endfor %}
+                            </select>
+                            {% endif %}
+                        {% else %}
+                            <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-1" aria-describedby="" placeholder="" required>
                         {% endif %}
-                    {% else %}
-                        <input type="{{ field['type'] }}" name="{{ field['name'] }}" class="form-control step-1" aria-describedby="" placeholder="" required>
-                    {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         </div>
