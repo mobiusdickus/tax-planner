@@ -121,13 +121,14 @@ class GoogleManager(Client):
             else:
                 raise
 
-            data = {'category': key, 'range': value['range'], 'values': []}
-            for field in category:
-                if value['pos'] == field['range_pos']:
-                    data['values'].append(
-                        update_data[field['name']]
-                    )
-            prepared_data.update(data)
+            for r in value:
+                data = {'category': key, 'range': r['range'], 'values': []}
+                for field in category:
+                    if r['pos'] == field['range_pos']:
+                        data['values'].append(
+                            [update_data[field['name']]]
+                        )
+                prepared_data.append(data)
 
         return prepared_data
 
@@ -145,91 +146,6 @@ class GoogleManager(Client):
                 'majorDimension': 'ROWS',
                 'values': d['values']
             })
-
-        # ranges = MASTER_SPREADSHEET_RANGES
-        # request_data = [
-            # {       # Basic Info
-                # 'range': ranges['BASIC_INFO'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['tax_advisor']],
-                    # [update_data['client_name']],
-                    # [update_data['business_name']],
-                    # [update_data['state']],
-                    # [update_data['filing_status']]
-                # ]
-            # }, {
-                # 'range': ranges['BASIC_INFO'][1],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['industry']]
-                # ]
-            # }, {
-                # 'range': ranges['BASIC_INFO'][2],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['num_of_children']]
-                # ]
-            # }, {    # Federal Income
-                # 'range': ranges['FEDERAL_INCOME'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['w2_income']],
-                    # [update_data['bank_interest']],
-                    # [update_data['taxable_ira_dist']],
-                    # [update_data['ordinary_dividends']],
-                    # [update_data['qualified_dividends']],
-                    # [update_data['short_term_cap_gains']],
-                    # [update_data['long_term_cap_gains']],
-                    # [update_data['other_income']]
-                # ]
-            # }, {    # Federal Income Adjustments
-                # 'range': ranges['FEDERAL_INCOME_ADJUSTMENTS'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['health_insurance_premium']],
-                    # [update_data['sep_ira_contribution']],
-                    # [update_data['ira_deduction']],
-                    # [update_data['401k_contribution']],
-                    # [update_data['alimony_paid']],
-                    # [update_data['other_deductions']]
-                # ]
-            # }, {    # Business Income
-                # 'range': ranges['BUSINESS_INCOME'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['s_corp_business_income']],
-                    # [update_data['schedule_c_income']],
-                    # [update_data['s_corp_wages']]
-                # ]
-            # }, {    # Federal Deductions
-                # 'range': ranges['FEDERAL_DEDUCTIONS'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['mortgage_interest']],
-                    # [update_data['state_income_taxes']],
-                    # [update_data['local_city_income_taxes']],
-                    # [update_data['property_taxes']],
-                    # [update_data['personal_property_taxes']],
-                    # [update_data['cash_donations']],
-                    # [update_data['noncash_donations']],
-                    # [update_data['other_donations']],
-                    # [update_data['medical_and_dental']]
-                # ]
-            # }, {
-                # 'range': ranges['FEDERAL_DEDUCTIONS'][1],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['federal_tax_withheld']]
-                # ]
-            # }, {    # ESTIMATED_TAX_PAYMENTS
-                # 'range': ranges['ESTIMATED_TAX_PAYMENTS'][0],
-                # 'majorDimension': 'ROWS',
-                # 'values': [
-                    # [update_data['federal_estimated_tax_payments']]
-                # ]
-            # }
-        # ]
 
         body = {
             'valueInputOption': 'USER_ENTERED',
