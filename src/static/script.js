@@ -1,3 +1,6 @@
+Vue.use(VueLoading);
+Vue.component('loading', VueLoading)
+
 Vue.component("step-navigation-step", {
     template: "#step-navigation-step-template",
 
@@ -51,6 +54,17 @@ Vue.component("step", {
                 }
             }
             return true;
+        },
+
+        submitForm() {
+            this.showLoader();
+            document.forms[0].submit();
+        },
+
+        showLoader() {
+            let loader = this.$loading.show({
+                loader: 'bars',
+            });
         },
 
         nextStep() {
