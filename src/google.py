@@ -32,13 +32,11 @@ class Client(object):
 
     def _authenticate(self):
         secret_file = os.path.join(
-            os.getcwd(),
-            self.client_secret_filename
+            os.getcwd(), self.client_secret_filename
         )
 
         credentials = service_account.Credentials.from_service_account_file(
-            secret_file,
-            scopes=self.scopes
+            secret_file, scopes=self.scopes
         )
         delegated_credentials = credentials.with_subject(self.primary_user)
 
@@ -47,12 +45,9 @@ class Client(object):
     def get_service(self, credentials, service_name, service_version):
         try:
             service = discovery.build(
-                service_name,
-                service_version,
-                credentials=credentials
+                service_name, service_version, credentials=credentials
             )
         except OSError as e:
-            print(e)
             raise e
 
         return service
@@ -67,11 +62,14 @@ class GoogleManager(Client):
         self.client_folder_id = settings.CLIENT_FOLDER_ID
 
     def copy_file(self, customer_name, file_type, file_id=None):
+        # Get the Google Drive API service
         service = self.get_service(
             self.credentials, 'drive', 'v3'
         )
 
+        # Prepare the request body params
         file_params = {
+            # Name of the file to be copied
             'name': 'Tax Planner - {} - {}'.format(
                 customer_name, datetime.now().replace(microsecond=0)
             ),
@@ -79,6 +77,7 @@ class GoogleManager(Client):
             # 'parents': [{'id': self.copies_folder_id}]
         }
 
+        # Accept alternative file ids for copy
         if not file_id:
             if file_type == 'spreadsheet':
                 file_id = self.master_spreadsheet_id
@@ -87,9 +86,9 @@ class GoogleManager(Client):
             else:
                 raise
 
+        # Send file copy request
         response = service.files().copy(
-            fileId=file_id,
-            body=file_params
+            fileId=file_id, body=file_params
         ).execute()
 
         # Move file into client folder
@@ -143,12 +142,12 @@ class GoogleManager(Client):
         return prepared_data
 
     def update_spreadsheet(self, spreadsheet, update_data):
+        # Get Google Sheets API service
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
         )
 
-        spreadsheet_id = spreadsheet['id']
-
+        # Prepare request body params
         request_data = []
         for d in update_data:
             request_data.append({
@@ -169,37 +168,40 @@ class GoogleManager(Client):
             'data': request_data
         }
 
+        # Send spreadsheet update request
         response = service.spreadsheets().values().batchUpdate(
-            spreadsheetId=spreadsheet_id,
-            body=body
+            spreadsheetId=spreadsheet['id'], body=body
         ).execute()
 
         return response
 
     def get_sheet_data(self, spreadsheet_id):
+        # Get Google Sheets API service
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
         )
 
-        value_range = "'Useforpdf'!A1:L2"
+        # Set the cell range for doc merge data
+        cell_range = "'Useforpdf'!A1:L2"
 
+        # Send spreadsheet get cell values request
         response = service.spreadsheets().values().get(
-            spreadsheetId=spreadsheet_id,
-            range=value_range
+            spreadsheetId=spreadsheet_id, range=cell_range
         ).execute()
-        rows = response.get('values', [])
 
         # Create dict for row values
+        rows = response.get('values', [])
         data = dict(zip(rows[0], rows[1]))
 
         return data
 
     def merge_doc(self, document, data):
-
+        # Get Google Docs API service
         service = self.get_service(
             self.credentials, 'docs', 'v1'
         )
 
+        # Prepare request body params
         requests = []
         for key, value in data.items():
             requests.append({
@@ -212,22 +214,27 @@ class GoogleManager(Client):
                 }
             })
 
-        result = service.documents().batchUpdate(
-            documentId=document['id'],
-            body={'requests': requests}
+        body = {'requests': requests}
+
+        # Send document merge request
+        response = service.documents().batchUpdate(
+            documentId=document['id'], body=body
         ).execute()
 
-        return result
+        return response
 
     def export_pdf(self, document_id):
+        # Get Google Drive API serivce
         service = self.get_service(self.credentials, 'drive', 'v3')
+
+        # Send file download request and export to pdf
         request = service.files().export_media(
-            fileId=document_id,
-            mimeType='application/pdf'
+            fileId=document_id, mimeType='application/pdf'
         )
 
         fh = io.BytesIO()
         downloader = MediaIoBaseDownload(fh, request)
+
         done = False
         while done is False:
             status, done = downloader.next_chunk()
