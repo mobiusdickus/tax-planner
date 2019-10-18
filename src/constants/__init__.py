@@ -9,8 +9,11 @@ from .input_fields import (
     STATES,
     FILING_STATUSES,
     INDUSTRIES,
+)
 
-    MASTER_SPREADSHEET_RANGES,
+from .sheet_ranges import (
+    MASTER_SHEET_RANGES,
+    USE_FOR_PDF_SHEET_RANGES,
 )
 
 __all__ = [
@@ -23,5 +26,6 @@ __all__ = [
     b'STATES',
     b'FILING_STATUSES',
     b'INDUSTRIES',
-    b'MASTER_SPREADSHEET_RANGES',
+    b'MASTER_SHEET_RANGES',
+    b'USE_FOR_PDF_SHEET_RANGES',
 ]

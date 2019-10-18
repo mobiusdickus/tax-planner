@@ -42,7 +42,7 @@
                   <span class="input-group-text" id="basic-addon1">$</span>
                 </div>
                 {% endif %}
-                <input class="form-control step-{{ i + 1 }}" {% if field.get('currency') %}step="0.01"{% endif %} type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
+                <input value="1000" class="form-control step-{{ i + 1 }}" {% if field.get('currency') %}step="0.01"{% endif %} type="{{ field['type'] }}" name="{{ field['name'] }}" aria-describedby="" placeholder="" required>
               {% endif %}
               </div>
             </div>

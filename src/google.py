@@ -15,7 +15,8 @@ from src.constants import (
     FEDERAL_DEDUCTIONS,
     ESTIMATED_TAX_PAYMENTS,
 
-    MASTER_SPREADSHEET_RANGES,
+    MASTER_SHEET_RANGES,
+    USE_FOR_PDF_SHEET_RANGES,
 )
 
 
@@ -103,7 +104,7 @@ class GoogleManager(Client):
 
     def prepare_update_data(self, update_data):
         prepared_data = []
-        for key, value in MASTER_SPREADSHEET_RANGES.items():
+        for key, value in MASTER_SHEET_RANGES.items():
             category = None
             if key == 'BASIC_INFO':
                 category = BASIC_INFO
@@ -115,18 +116,8 @@ class GoogleManager(Client):
                 category = BUSINESS_INCOME
             elif key == 'FEDERAL_DEDUCTIONS':
                 category = FEDERAL_DEDUCTIONS
-            elif 'ESTIMATED_TAX_PAYMENTS':
+            elif key == 'ESTIMATED_TAX_PAYMENTS':
                 category = ESTIMATED_TAX_PAYMENTS
-            elif 'COMPLETION_INFO':
-                prepared_data.append({
-                    'range': "'Useforpdf'!M2:M4",
-                    'values': [
-                        update_data['doc_link'],
-                        update_data['pdf_link'],
-                        update_data['email_status'],
-                    ]
-                })
-                continue
             else:
                 raise
 
@@ -157,11 +148,12 @@ class GoogleManager(Client):
             })
 
         # Clear previous spreadsheets completion info
-        request_data.append({
-            'range': "'Useforpdf'!M2:M4",
-            'majorDimension': 'ROWS',
-            'values': [['', '', '']]
-        })
+        # cell_range = USE_FOR_PDF_SHEET_RANGES['COMPLETION_INFO'][0]['range']
+        # request_data.append({
+            # 'range': cell_range,
+            # 'majorDimension': 'ROWS',
+            # 'values': [['', '', '']]
+        # })
 
         body = {
             'valueInputOption': 'USER_ENTERED',
@@ -182,7 +174,7 @@ class GoogleManager(Client):
         )
 
         # Set the cell range for doc merge data
-        cell_range = "'Useforpdf'!A1:L2"
+        cell_range = USE_FOR_PDF_SHEET_RANGES['DOC_MERGE'][0]['range']
 
         # Send spreadsheet get cell values request
         response = service.spreadsheets().values().get(

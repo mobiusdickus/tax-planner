@@ -16,7 +16,9 @@ from .constants import (
 
     STATES,
     FILING_STATUSES,
-    INDUSTRIES
+    INDUSTRIES,
+
+    USE_FOR_PDF_SHEET_RANGES,
 )
 
 
@@ -71,10 +73,19 @@ def submit_form():
         new_document, sheet_data
     )
 
-    completion_info = None
+    completion_info = {
+        'doc_link': 'doc_link',
+        'pdf_link': 'pdf_link',
+        'email_status': 'email_status'
+    }
+
+    completion_data = [{
+        'range': USE_FOR_PDF_SHEET_RANGES['COMPLETION_INFO'][0]['range'],
+        'values': [[value] for value in completion_info]
+    }]
 
     manager.update_spreadsheet(
-        updated_spreadsheet, completion_info
+        new_spreadsheet, completion_data
     )
 
     # Download client doc and export as pdf

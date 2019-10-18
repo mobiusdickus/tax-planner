@@ -87,7 +87,7 @@ new Vue({
     el: "#app",
 
     data: {
-        currentstep: 1,
+        currentstep: 6,
 
         steps: [
             {
