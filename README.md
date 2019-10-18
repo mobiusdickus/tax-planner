@@ -7,7 +7,7 @@ A simple flask app that redners a form that feeds into Google Sheets, merges wit
 In order to get this flask app up and running you will need to set a few things up from your google accounts developer console.
 
 - Create a new project or use an existing one
-- Enable Google Sheets API and Google Drive API
+- Enable Google Sheets API, Google Drive API, and Google Docs API
 - Create a service account and download credentials in the form of a json file
 - Enable domain wide delegation for said service account
 - Authorize the client to the appropriate scopes from the Google Admin console
