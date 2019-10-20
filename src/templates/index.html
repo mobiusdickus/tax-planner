@@ -72,15 +72,14 @@
         <script type="x-template" id="step-template">
           <div class="step-wrapper text-center" :class="stepWrapperClass">
                   <button type="button" class="btn btn-primary" @click="lastStep" :disabled="firststep">
-                      Back
+                      BACK
                   </button>
                   <button type="button" class="btn btn-primary" @click="nextStep" :disabled="laststep">
-                      Next
+                      NEXT
                   </button>
                   <button type="button" class="btn btn-primary" @click="submitForm" v-if="laststep">
-                      Submit & Download PDF
-                  </button>
-              </div>
+                      SUBMIT & DOWNLOAD PDF
+          </div>
         </script>
       </div>
     </div>
