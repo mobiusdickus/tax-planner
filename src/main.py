@@ -55,7 +55,7 @@ def submit_form():
 
     # Update client spreadsheet data
     updated_spreadsheet = manager.update_spreadsheet(
-        new_spreadsheet, prepared_data
+        new_spreadsheet['id'], prepared_data
     )
 
     # Get spreadsheet data for pdf
@@ -70,22 +70,17 @@ def submit_form():
 
     # Merge client spreadsheet data with client doc
     merged_document = manager.merge_doc(
-        new_document, sheet_data
+        new_document['id'], sheet_data
     )
 
-    completion_info = {
-        'doc_link': 'doc_link',
-        'pdf_link': 'pdf_link',
-        'email_status': 'email_status'
-    }
+    # Get final step completion info
+    completion_data = manager.get_completion_data(
+        new_document['id']
+    )
 
-    completion_data = [{
-        'range': USE_FOR_PDF_SHEET_RANGES['COMPLETION_INFO'][0]['range'],
-        'values': [[value] for value in completion_info]
-    }]
-
+    # Update spreadhseet with completion info (links)
     manager.update_spreadsheet(
-        new_spreadsheet, completion_data
+        new_spreadsheet['id'], completion_data
     )
 
     # Download client doc and export as pdf

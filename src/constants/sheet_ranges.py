@@ -41,6 +41,6 @@ USE_FOR_PDF_SHEET_RANGES = {
     }],
     'COMPLETION_INFO': [{
         'pos': 0,
-        'range': "'Useforpdf'!M2:M4"
+        'range': "'Useforpdf'!M2:04"
     }]
 }

@@ -132,7 +132,7 @@ class GoogleManager(Client):
 
         return prepared_data
 
-    def update_spreadsheet(self, spreadsheet, update_data):
+    def update_spreadsheet(self, spreadsheet_id, update_data):
         # Get Google Sheets API service
         service = self.get_service(
             self.credentials, 'sheets', 'v4'
@@ -147,14 +147,6 @@ class GoogleManager(Client):
                 'values': d['values']
             })
 
-        # Clear previous spreadsheets completion info
-        # cell_range = USE_FOR_PDF_SHEET_RANGES['COMPLETION_INFO'][0]['range']
-        # request_data.append({
-            # 'range': cell_range,
-            # 'majorDimension': 'ROWS',
-            # 'values': [['', '', '']]
-        # })
-
         body = {
             'valueInputOption': 'USER_ENTERED',
             'data': request_data
@@ -162,7 +154,7 @@ class GoogleManager(Client):
 
         # Send spreadsheet update request
         response = service.spreadsheets().values().batchUpdate(
-            spreadsheetId=spreadsheet['id'], body=body
+            spreadsheetId=spreadsheet_id, body=body
         ).execute()
 
         return response
@@ -173,6 +165,7 @@ class GoogleManager(Client):
             self.credentials, 'sheets', 'v4'
         )
 
+        # NOTE: Can loop over multiple ranges if applicable
         # Set the cell range for doc merge data
         cell_range = USE_FOR_PDF_SHEET_RANGES['DOC_MERGE'][0]['range']
 
@@ -187,7 +180,26 @@ class GoogleManager(Client):
 
         return data
 
-    def merge_doc(self, document, data):
+    def get_completion_data(self, document_id):
+        completion_info = {
+            'doc_link': 'https://docs.google.com/document/d/{}'.format(document_id),
+            'pdf_link': '',
+            'email_status': ''
+        }
+
+        # Set cell ranges for final spreadsheet update
+        cell_range = USE_FOR_PDF_SHEET_RANGES['COMPLETION_INFO'][0]['range']
+
+        # Prepare final spreadsheet data
+        completion_data = [{
+            'range': cell_range,
+            'values': [[value for key, value in completion_info.items()]]
+        }]
+
+        return completion_data
+
+
+    def merge_doc(self, document_id, data):
         # Get Google Docs API service
         service = self.get_service(
             self.credentials, 'docs', 'v1'
@@ -210,7 +222,7 @@ class GoogleManager(Client):
 
         # Send document merge request
         response = service.documents().batchUpdate(
-            documentId=document['id'], body=body
+            documentId=document_id, body=body
         ).execute()
 
         return response
