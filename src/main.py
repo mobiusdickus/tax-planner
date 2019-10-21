@@ -16,7 +16,9 @@ from .constants import (
 
     STATES,
     FILING_STATUSES,
-    INDUSTRIES
+    INDUSTRIES,
+
+    USE_FOR_PDF_SHEET_RANGES,
 )
 
 
@@ -53,8 +55,7 @@ def submit_form():
 
     # Update client spreadsheet data
     updated_spreadsheet = manager.update_spreadsheet(
-        new_spreadsheet,
-        prepared_data
+        new_spreadsheet['id'], prepared_data
     )
 
     # Get spreadsheet data for pdf
@@ -69,7 +70,17 @@ def submit_form():
 
     # Merge client spreadsheet data with client doc
     merged_document = manager.merge_doc(
-        new_document, sheet_data
+        new_document['id'], sheet_data
+    )
+
+    # Get final step completion info
+    completion_data = manager.get_completion_data(
+        new_document['id']
+    )
+
+    # Update spreadhseet with completion info (links)
+    manager.update_spreadsheet(
+        new_spreadsheet['id'], completion_data
     )
 
     # Download client doc and export as pdf
