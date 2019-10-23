@@ -6,15 +6,52 @@ services:
     labels:
       shipyard.route: '/'
     build: '.'
+    restart: 'always'
+    env_file:
+      - environments/prod.env
     environment:
+      VIRTUAL_HOST: "taxplanner260.1800accountant.com"
+      LETSENCRYPT_HOST: "taxplanner260.1800accountant.com"
+      LETSENCRYPT_EMAIL: "webmaster@1800accountant.com"
       FLASK_DEBUG: '1'
-      PRIMARY_USER: ${PRIMARY_USER}
-      CLIENT_SECRET_FILE: ${CLIENT_SECRET_FILE}
-      MASTER_DOC_ID: ${MASTER_DOC_ID}
-      MASTER_SPREADSHEET_ID: ${MASTER_SPREADSHEET_ID}
-      MASTER_FOLDER_ID: ${MASTER_FOLDER_ID}
-      CLIENT_FOLDER_ID: ${CLIENT_FOLDER_ID}
     volumes:
       - './src:/srv/src'
     ports:
-      - '8080:8080'
+      - 8080
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy:0.4.0
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - certs:/etc/nginx/certs:ro
+      - nginx-conf:/etc/nginx/conf.d
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-share:/usr/share/nginx/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      - DEFAULT_HOST=ptrvldz.me
+    entrypoint: bash
+    command: -c "echo 'client_max_body_size 10m;' > /etc/nginx/conf.d/extra_configuration.conf; /app/docker-entrypoint.sh forego start -r"
+
+  letsencrypt-nginx-proxy:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: letsencrypt-nginx-proxy
+    restart: always
+    environment:
+      NGINX_PROXY_CONTAINER: nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - nginx-conf:/etc/nginx/conf.d
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-share:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+volumes:
+  certs:
+  nginx-conf:
+  nginx-vhost:
+  nginx-share:
