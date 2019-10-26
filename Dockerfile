@@ -16,8 +16,9 @@ RUN pipenv install
 
 # Add the project
 ADD setup.py ./
+ADD config ./config
 ADD src ./src
 RUN pipenv run python setup.py develop
 
 ENV FLASK_APP src
-CMD pipenv run flask run --host 0.0.0.0 --port 8080
+CMD ["pipenv", "run", "gunicorn", "-c", "config/gunicorn.py", "src:create_app()"]

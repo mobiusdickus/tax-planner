@@ -7,7 +7,7 @@ services:
       shipyard.route: '/'
     build: '.'
     environment:
-      FLASK_DEBUG: '1'
+      FLASK_ENV: ${ENVIRONMENT}
       PRIMARY_USER: ${PRIMARY_USER}
       CLIENT_SECRET_FILE: ${CLIENT_SECRET_FILE}
       MASTER_DOC_ID: ${MASTER_DOC_ID}
