@@ -1,3 +1,4 @@
 notes.txt
 client_secret.json
 .envrc*
+__pycache__
