@@ -51,6 +51,20 @@ Here we will also need to grab the sheets Id and the docs Id and set them as env
 - `MASTER_SPREADSHEET_ID`
 - `MASTER_DOC_ID`
 
+### Google APIs Considerations
+
+You should ensure each Google API you use will not exceed their corresponding quota limits relative to your app's intended rate limits. The default quota limits can be increased upon request but may affect your pricing.
+
+**References:**
+- Google Sheets API
+  - https://developers.google.com/sheets/api/limits
+- Gooele Docs API
+  - https://developers.google.com/docs/api/limits
+- Google Drive API
+  - 1,000,000,000 Queries per day
+  - 1,000 Queries per 100 seconds per user
+  - 10,000 Queries per 100 seconds
+
 ## Prerequisites
 
 - Install Docker & Docker Compose
