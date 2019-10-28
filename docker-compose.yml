@@ -17,13 +17,5 @@ services:
       CLIENT_FOLDER_ID: ${CLIENT_FOLDER_ID}
     volumes:
       - './src:/srv/src'
-    expose:
-      - '8080'
-
-  nginx:
-    image: nginx:latest
-    container_name: production_nginx
-    volumes:
-      - './config/nginx.conf:/etc/nginx/nginx.conf'
     ports:
       - '8080:8080'
